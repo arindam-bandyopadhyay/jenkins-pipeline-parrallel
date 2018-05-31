@@ -78,9 +78,9 @@ pipeline {
       steps {
         echo 'from stage3'
         unstash 'stash-stage1.1'
-        sh 'cat ouptut.txt'
+        sh 'cat output.txt'
         unstash 'stash-stage1.2'
-        sh 'cat ouptut.txt'
+        sh 'cat output.txt'
       }
     }
   }
