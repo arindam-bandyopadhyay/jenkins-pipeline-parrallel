@@ -85,7 +85,7 @@ pipeline {
           unstash 'stash-stage1.2'
           sh 'pwd && ls -al . && ls -al ../ && cat output.txt'
         }
-        archiveArtifacts artifacts: 'stash-stage*'
+        archiveArtifacts artifacts: 'from-stage*'
       }
     }
   }
