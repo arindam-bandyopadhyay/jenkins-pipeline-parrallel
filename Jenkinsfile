@@ -31,6 +31,18 @@ pipeline {
           }
         }
         stage('stage 1.3') {
+          agent {
+            kubernetes {
+              //cloud 'kubernetes'
+              label 'mypod'
+              containerTemplate {
+                name 'alpine'
+                image 'alpine:latest'
+                ttyEnabled true
+                command 'cat'
+              }
+            }
+          }
           steps {
             echo "from stage 1.3" 
             sh 'sleep 360'
