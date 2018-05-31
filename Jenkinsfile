@@ -36,8 +36,8 @@ pipeline {
               //cloud 'kubernetes'
               label 'mypod'
               containerTemplate {
-                name 'alpine'
-                image 'alpine:latest'
+                name 'busybox'
+                image 'busybox:latest'
                 ttyEnabled true
                 command 'cat'
               }
