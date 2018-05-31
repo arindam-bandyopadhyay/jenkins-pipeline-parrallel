@@ -12,16 +12,16 @@ pipeline {
     }
   }
   stages {
-    stage('stage0') {
+    stage('stage 0') {
       parallel {
-        stage('stage1') {
+        stage('stage1.1') {
           steps {
             container('maven') {
-              echo 'from Stage1'
+              echo 'from Stage1.1'
             }
           }
         }
-        stage('stage2') {
+        stage('stage 1.2') {
           agent {
             kubernetes {
               //cloud 'kubernetes'
@@ -36,9 +36,14 @@ pipeline {
           }
           steps {
             container('maven') {
-              echo 'from Stage 2'
+              echo 'from Stage 1.2'
               sh 'sleep 120'
             }
+          }
+        }
+        stage('stage 1.3') {
+          steps {
+            echo "from stage 1.3" 
           }
         }
       }
