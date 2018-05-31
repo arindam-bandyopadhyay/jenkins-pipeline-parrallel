@@ -2,7 +2,7 @@ pipeline {
   agent {
     kubernetes {
       //cloud 'kubernetes'
-      label 'mypod'
+      //label 'mypod'
       containerTemplate {
         name 'maven'
         image 'maven:3.3.9-jdk-8-alpine'
@@ -17,7 +17,7 @@ pipeline {
         stage('stage1.1') {
           agent {
             kubernetes {
-              label 'mypod-A'
+              //label 'mypod-A'
               containerTemplate {
                 name 'busybox'
                 image 'busybox:latest'
@@ -37,7 +37,7 @@ pipeline {
         stage('stage 1.2') {
           agent {
             kubernetes {
-              label 'mypod-B'
+              //abel 'mypod-B'
               containerTemplate {
                 name 'busybox'
                 image 'busybox:latest'
@@ -57,7 +57,7 @@ pipeline {
         stage('stage 1.3') {
           agent {
             kubernetes {
-              label 'mypod-C'
+              //label 'mypod-C'
               containerTemplate {
                 name 'busybox'
                 image 'busybox:latest'
