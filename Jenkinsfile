@@ -85,6 +85,7 @@ pipeline {
           unstash 'stash-stage1.2'
           sh 'pwd && ls -al . && ls -al ../ && cat output.txt'
         }
+        archive includes: 'stash-stage*'
       }
     }
   }
