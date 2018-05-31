@@ -7,6 +7,7 @@ pipeline {
           agent {
             docker {
               image 'ubuntu'
+              label 'default-java'
             }
 
           }
