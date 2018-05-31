@@ -30,7 +30,7 @@ pipeline {
             container('busybox') {
               echo 'from Stage1.1'
               sh 'echo "stage1.1" > output.txt'
-              stash includes: 'output.txt', name: 'stashname'
+              stash includes: 'output.txt', name: 'stash-stage1.1'
             }
           }
         }
@@ -50,7 +50,7 @@ pipeline {
             container('busybox') {
               echo 'from Stage 1.2'
               sh 'echo "stage1.2" > output.txt'
-              stash includes: 'output.txt', name: 'stashname'
+              stash includes: 'output.txt', name: 'stash-stage1.2'
             }
           }
         }
@@ -77,8 +77,10 @@ pipeline {
     stage('stage3') {
       steps {
         echo 'from stage3'
-        unstash 'stashname'
-        sh 'ouptut.txt'
+        unstash 'stash-stage1.1'
+        sh 'cat ouptut.txt'
+        unstash 'stash-stage1.2'
+        sh 'cat ouptut.txt'
       }
     }
   }
