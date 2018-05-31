@@ -15,26 +15,46 @@ pipeline {
     stage('stage 0') {
       parallel {
         stage('stage1.1') {
-          steps {
-            container('maven') {
-              echo 'from Stage1.1'
-              sh 'sleep 240'
+          agent {
+            kubernetes {
+              label 'mypod-A'
+              defaultContainer 'busybox'
+              containerTemplate {
+                name 'busybox'
+                image 'busybox:latest'
+                ttyEnabled true
+                command 'cat'
+              }
             }
+          }
+          steps {
+            echo 'from Stage1.1'
+            sh 'sleep 240'
           }
         }
         stage('stage 1.2') {
-          steps {
-            container('maven') {
-              echo 'from Stage 1.2'
-              sh 'sleep 300'
+          agent {
+            kubernetes {
+              label 'mypod-B'
+              defaultContainer 'busybox'
+              containerTemplate {
+                name 'busybox'
+                image 'busybox:latest'
+                ttyEnabled true
+                command 'cat'
+              }
             }
+          }
+          steps {
+            echo 'from Stage 1.2'
+            sh 'sleep 300'
           }
         }
         stage('stage 1.3') {
           agent {
             kubernetes {
-              //cloud 'kubernetes'
-              label 'mypod'
+              label 'mypod-C'
+              defaultContainer 'busybox'
               containerTemplate {
                 name 'busybox'
                 image 'busybox:latest'
