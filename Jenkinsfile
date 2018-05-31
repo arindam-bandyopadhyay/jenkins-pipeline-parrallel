@@ -29,7 +29,7 @@ pipeline {
           steps {
             container('busybox') {
               echo 'from Stage1.1'
-              sh 'stage1.1 > output.txt'
+              sh 'echo "stage1.1" > output.txt'
               stash includes: 'output.txt', name: 'stashname'
             }
           }
@@ -49,7 +49,7 @@ pipeline {
           steps {
             container('busybox') {
               echo 'from Stage 1.2'
-              sh 'stage1.2 > output.txt'
+              sh 'echo "stage1.2" > output.txt'
               stash includes: 'output.txt', name: 'stashname'
             }
           }
