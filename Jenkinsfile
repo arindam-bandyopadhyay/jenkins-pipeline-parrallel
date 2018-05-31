@@ -33,6 +33,7 @@ pipeline {
     stage('stage3') {
       steps {
         echo 'from stage3'
+        sh 'sleep 300'
       }
     }
   }
