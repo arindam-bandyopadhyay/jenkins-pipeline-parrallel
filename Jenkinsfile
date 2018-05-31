@@ -1,14 +1,14 @@
 pipeline {
  agent {
     kubernetes {
-      label 'mypod'
+      //label 'mypod'
       defaultContainer 'jnlp'
       yaml """
 apiVersion: v1
 kind: Pod
 metadata:
   labels:
-    some-label: mypod
+    mypod: "ok"
 spec:
   containers:
   - name: busybox
