@@ -29,7 +29,8 @@ pipeline {
           steps {
             container('busybox') {
               echo 'from Stage1.1'
-              sh 'sleep 240'
+              sh 'stage1.1 > output.txt'
+              stash includes: 'output.txt', name: 'stashname'
             }
           }
         }
@@ -48,7 +49,8 @@ pipeline {
           steps {
             container('busybox') {
               echo 'from Stage 1.2'
-              sh 'sleep 300'
+              sh 'stage1.2 > output.txt'
+              stash includes: 'output.txt', name: 'stashname'
             }
           }
         }
@@ -67,7 +69,6 @@ pipeline {
           steps {
             container('busybox') {
               echo "from stage 1.3" 
-              sh 'sleep 360'
             }
           }
         }
@@ -76,6 +77,8 @@ pipeline {
     stage('stage3') {
       steps {
         echo 'from stage3'
+        unstash 'stashname'
+        sh 'ouptut.txt'
       }
     }
   }
