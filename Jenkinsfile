@@ -7,7 +7,7 @@ pipeline {
           agent {
             kubernetes {
               //cloud 'kubernetes'
-              label 'mypod-stage1'
+              label 'mypod'
               containerTemplate {
                 name 'maven'
                 image 'maven:3.3.9-jdk-8-alpine'
@@ -26,7 +26,7 @@ pipeline {
           agent {
             kubernetes {
               //cloud 'kubernetes'
-              label 'mypod-stage2'
+              label 'mypod'
               containerTemplate {
                 name 'maven'
                 image 'maven:3.3.9-jdk-8-alpine'
@@ -47,7 +47,7 @@ pipeline {
       agent {
         kubernetes {
           //cloud 'kubernetes'
-          label 'mypod-stage3'
+          label 'mypod'
           containerTemplate {
             name 'maven'
             image 'maven:3.3.9-jdk-8-alpine'
