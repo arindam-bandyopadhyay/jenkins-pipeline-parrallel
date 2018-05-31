@@ -18,7 +18,6 @@ pipeline {
           agent {
             kubernetes {
               label 'mypod-A'
-              defaultContainer 'busybox'
               containerTemplate {
                 name 'busybox'
                 image 'busybox:latest'
@@ -28,15 +27,16 @@ pipeline {
             }
           }
           steps {
-            echo 'from Stage1.1'
-            sh 'sleep 240'
+            container('busybox') {
+              echo 'from Stage1.1'
+              sh 'sleep 240'
+            }
           }
         }
         stage('stage 1.2') {
           agent {
             kubernetes {
               label 'mypod-B'
-              defaultContainer 'busybox'
               containerTemplate {
                 name 'busybox'
                 image 'busybox:latest'
@@ -46,15 +46,16 @@ pipeline {
             }
           }
           steps {
-            echo 'from Stage 1.2'
-            sh 'sleep 300'
+            container('busybox') {
+              echo 'from Stage 1.2'
+              sh 'sleep 300'
+            }
           }
         }
         stage('stage 1.3') {
           agent {
             kubernetes {
               label 'mypod-C'
-              defaultContainer 'busybox'
               containerTemplate {
                 name 'busybox'
                 image 'busybox:latest'
@@ -64,8 +65,10 @@ pipeline {
             }
           }
           steps {
-            echo "from stage 1.3" 
-            sh 'sleep 360'
+            container('busybox') {
+              echo "from stage 1.3" 
+              sh 'sleep 360'
+            }
           }
         }
       }
