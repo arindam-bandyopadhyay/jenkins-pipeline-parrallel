@@ -12,7 +12,7 @@ pipeline {
     }
   }
   stages {
-    stage('stage 0') {
+    stage('stage 1') {
       parallel {
         stage('stage1.1') {
           agent {
