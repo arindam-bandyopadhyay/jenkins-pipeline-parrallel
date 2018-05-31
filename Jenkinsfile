@@ -9,6 +9,12 @@ pipeline {
         ttyEnabled true
         command 'cat'
       }
+      containerTemplate {
+        name 'busybox'
+        image 'busybox:latest'
+        ttyEnabled true
+        command 'cat'
+      }
     }
   }
   stages {
@@ -18,12 +24,6 @@ pipeline {
           agent {
             kubernetes {
               label 'mypod-A'
-              containerTemplate {
-                name 'busybox'
-                image 'busybox:latest'
-                ttyEnabled true
-                command 'cat'
-              }
             }
           }
           steps {
@@ -37,12 +37,6 @@ pipeline {
           agent {
             kubernetes {
               label 'mypod-B'
-              containerTemplate {
-                name 'busybox'
-                image 'busybox:latest'
-                ttyEnabled true
-                command 'cat'
-              }
             }
           }
           steps {
@@ -56,12 +50,6 @@ pipeline {
           agent {
             kubernetes {
               label 'mypod-C'
-              containerTemplate {
-                name 'busybox'
-                image 'busybox:latest'
-                ttyEnabled true
-                command 'cat'
-              }
             }
           }
           steps {
