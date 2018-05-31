@@ -24,6 +24,7 @@ pipeline {
           agent {
             kubernetes {
               label 'mypod-A'
+              containerTemplate{}
             }
           }
           steps {
@@ -37,6 +38,7 @@ pipeline {
           agent {
             kubernetes {
               label 'mypod-B'
+              containerTemplate{}
             }
           }
           steps {
@@ -50,6 +52,7 @@ pipeline {
           agent {
             kubernetes {
               label 'mypod-C'
+              containerTemplate{}
             }
           }
           steps {
