@@ -11,6 +11,18 @@ pipeline {
       }
     }
   }
+  agent {
+    kubernetes {
+      //cloud 'kubernetes'
+      label 'mypod-stage2'
+      containerTemplate {
+        name 'maven'
+        image 'maven:3.5.2-jdk-8-alpine'
+        ttyEnabled true
+        command 'cat'
+      }
+    }
+  }
   stages {
     stage('stage 0') {
       parallel {
@@ -22,22 +34,10 @@ pipeline {
           }
         }
         stage('stage 1.2') {
-          agent {
-            kubernetes {
-              //cloud 'kubernetes'
-              label 'mypod-stage2'
-              containerTemplate {
-                name 'maven'
-                image 'maven:3.5.2-jdk-8-alpine'
-                ttyEnabled true
-                command 'cat'
-              }
-            }
-          }
+          agent { label 'mypod-stage2' }
           steps {
             container('maven') {
               echo 'from Stage 1.2'
-              sh 'sleep 120'
             }
           }
         }
@@ -51,7 +51,6 @@ pipeline {
     stage('stage3') {
       steps {
         echo 'from stage3'
-        sh 'sleep 300'
       }
     }
   }
