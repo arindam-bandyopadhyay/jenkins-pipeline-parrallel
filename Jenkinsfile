@@ -1,23 +1,31 @@
 pipeline {
-  agent any
+  agent {
+    kubernetes {
+      //cloud 'kubernetes'
+      label 'mypod'
+      containerTemplate {
+        name 'maven'
+        image 'maven:3.3.9-jdk-8-alpine'
+        ttyEnabled true
+        command 'cat'
+      }
+    }
+  }
   stages {
     stage('stage1') {
       parallel {
         stage('stage1') {
-          agent {
-            docker {
-              image 'ubuntu'
-              label 'default-java-label'
-            }
-
-          }
           steps {
-            echo 'Stage1'
+            container('maven') {
+              echo 'from Stage1'
+            }
           }
         }
         stage('stage2') {
           steps {
-            echo 'from stage2'
+            container('maven') {
+              echo 'from Stage 3'
+            }
           }
         }
       }
