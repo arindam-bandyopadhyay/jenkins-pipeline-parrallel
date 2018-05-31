@@ -25,7 +25,7 @@ pipeline {
           agent {
             kubernetes {
               //cloud 'kubernetes'
-              label 'mypod'
+              label 'mypod-stage2'
               containerTemplate {
                 name 'maven'
                 image 'maven:3.5.2-jdk-8-alpine'
@@ -37,6 +37,7 @@ pipeline {
           steps {
             container('maven') {
               echo 'from Stage 2'
+              sh 'sleep 120'
             }
           }
         }
