@@ -2,7 +2,7 @@ pipeline {
   agent {
     kubernetes {
       //cloud 'kubernetes'
-      //label 'mypod'
+      label 'mypod'
       containerTemplate {
         name 'maven'
         image 'maven:3.3.9-jdk-8-alpine'
@@ -15,17 +15,6 @@ pipeline {
     stage('stage 1') {
       parallel {
         stage('stage1.1') {
-          agent {
-            kubernetes {
-              //label 'mypod-A'
-              containerTemplate {
-                name 'busybox'
-                image 'busybox:latest'
-                ttyEnabled true
-                command 'cat'
-              }
-            }
-          }
           steps {
             container('busybox') {
               echo 'from Stage1.1'
@@ -35,17 +24,6 @@ pipeline {
           }
         }
         stage('stage 1.2') {
-          agent {
-            kubernetes {
-              //abel 'mypod-B'
-              containerTemplate {
-                name 'busybox'
-                image 'busybox:latest'
-                ttyEnabled true
-                command 'cat'
-              }
-            }
-          }
           steps {
             container('busybox') {
               echo 'from Stage 1.2'
@@ -55,17 +33,6 @@ pipeline {
           }
         }
         stage('stage 1.3') {
-          agent {
-            kubernetes {
-              //label 'mypod-C'
-              containerTemplate {
-                name 'busybox'
-                image 'busybox:latest'
-                ttyEnabled true
-                command 'cat'
-              }
-            }
-          }
           steps {
             container('busybox') {
               echo "from stage 1.3" 
