@@ -46,7 +46,7 @@ spec:
             tests["${i}"] = {
               stage('blabla${i}'){
                 container('test-${i}') {
-                  echo 'from parallel stage'
+                  echo 'from parallel stage ${i}'
                 }
               }
             }
