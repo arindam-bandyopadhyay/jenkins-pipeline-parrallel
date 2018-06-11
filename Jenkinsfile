@@ -47,14 +47,13 @@ spec:
               stage('blabla${i}'){
                 steps {
                   container('test-${i}') {
-                    echo 'from non parallel stage'
+                    echo 'from parallel stage'
                   }
                 }
               }
             }
           }
-          echo "${tests}"
-          parallel tests
+          ${tests}
         }
       }
     }
