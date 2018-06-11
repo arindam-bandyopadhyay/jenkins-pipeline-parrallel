@@ -40,19 +40,22 @@ spec:
     }
     stage('glassfish-functional-tests') {
       steps {
-        script {
-          def tests = [:]
-          for (i = 0; i <3; i++) {
-            tests["${i}"] = {
-              stage('blabla${i}'){
-                container('test-${i}') {
-                  echo "from parallel stage ${i}"
-                }
+        parallel(
+          0: {
+            stage('blabla0'){
+              container('test-0') {
+                echo "from parallel stage 0"
+              }
+            }
+          },
+          1: {
+            stage('blabla1'){
+              container('test-1') {
+                echo "from parallel stage 1"
               }
             }
           }
-          parallel tests
-        }
+        )
       }
     }
   }
