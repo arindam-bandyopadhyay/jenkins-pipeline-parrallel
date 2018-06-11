@@ -50,7 +50,7 @@ spec:
                       stage('Run shell') {
                         container('glassfish-ci') {
                           sh 'echo hello world'
-                          sh 'sleep 45'
+                          sh 'for i in `seq 120` ; do echo "i=${i}" ; sleep 1 ; done'
                         }
                       }
                   }
