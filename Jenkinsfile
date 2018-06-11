@@ -45,15 +45,14 @@ spec:
           for (i = 0; i <3; i++) {
             tests["${i}"] = {
               stage('blabla${i}'){
-                steps {
-                  container('test-${i}') {
-                    echo 'from parallel stage'
-                  }
+                container('test-${i}') {
+                  echo 'from parallel stage'
                 }
               }
             }
           }
-          ${tests}
+          echo "${tests}"
+          parallel tests
         }
       }
     }
