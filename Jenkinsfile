@@ -41,14 +41,19 @@ spec:
     stage('glassfish-functional-tests') {
       steps {
         parallel(
-          0: {
+          a: {
             stage('blabla0'){
+              agent {
+                kubernetes {
+                  label 'mypod-A'
+                }
+              }
               container('test-0') {
                 echo "from parallel stage 0"
               }
             }
           },
-          1: {
+          b: {
             stage('blabla1'){
               container('test-1') {
                 echo "from parallel stage 1"
