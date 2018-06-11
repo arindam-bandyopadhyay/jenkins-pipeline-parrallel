@@ -1,26 +1,3 @@
-def jobs = ["ql_gf_full_profile_all", "ql_gf_web_profile_all", "deployment_all"]
-
-def parallelStagesMap = jobs.collectEntries {
-  ["${it}": generateStage(it)]
-}
-
-def generateStage(job) {
-  return {
-    stage("${job}") {
-      agent {
-        kubernetes {
-          label 'mypod-A'
-        }
-      }
-      steps {
-        container('glassfish-ci') {
-        echo 'form ${job}'
-	}
-      }
-    }
-  }
-}
-
 pipeline {
   agent {
     kubernetes {
@@ -62,11 +39,26 @@ spec:
       }
     }
     stage('glassfish-functional-tests') {
- steps {
-      script {
-        parallel parallelStagesMap
+      steps {
+        script {
+          def tests = [:]
+          for (i = 0; i <3; i++) {
+            tests["${i}"] = {
+              agent {
+                kubernetes {
+                  label 'mypod-${i}'
+                }
+              }
+              steps {
+                container('test-${i}') {
+                  echo 'from non parallel stage'
+                }
+              }
+            }
+          }
+          parallel tests
+        }
       }
     }
-}
   }
 }
