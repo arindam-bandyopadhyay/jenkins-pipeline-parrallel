@@ -40,14 +40,23 @@ spec:
     }
     stage('glassfish-functional-tests') {
       steps {
-        parallel(
-          a: {
-              container('test-0') {
-                echo "from parallel stage 0"
+        script {
+          def tests = [:]
+          for (i = 0; i <3; i++) {
+            tests["${i}"] = {
+              kubernetes {
+                label 'mypod-A'
               }
+              stage('blabla${i}'){
+                container('test-${i}') {
+                  sh 'sleep 10'
+                  echo "from parallel stage ${i}"
+                }
+              }
+            }
           }
-        )
+          parallel tests
+        }
       }
     }
   }
-}
