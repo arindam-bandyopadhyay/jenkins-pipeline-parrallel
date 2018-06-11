@@ -49,7 +49,7 @@ spec:
               }
               stage('blabla${i}'){
                 container('test-${i}') {
-                  sh 'sleep 10'
+                  sh 'sleep 30'
                   echo "from parallel stage ${i}"
                 }
               }
