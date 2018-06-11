@@ -13,6 +13,11 @@ spec:
   containers:
   - name: glassfish-ci
     image: arindamb/glassfish-ci
+    # set imagePullPolicy to always
+    # and use :latest tag
+    # NOTE, this is only for the dev period
+    # eventually we will use FIXED versions and imagePullPolicy IfNotPresent
+    # https://kubernetes.io/docs/concepts/containers/images/
     command:
     - cat
     tty: true
@@ -41,6 +46,23 @@ spec:
     stage('glassfish-functional-tests') {
       steps {
         script {
+
+          // doing old scripted way within a new declarative style pipeline
+          // snippets below are from the README at https://github.com/jenkinsci/kubernetes-plugin
+          // some context between old and new can be found at https://jenkins.io/blog/2017/09/25/declarative-1/
+
+          // TODO
+          // archiveArtifacts
+          // junit
+          // unstash
+          // see the list of steps plugins https://jenkins.io/doc/pipeline/steps/
+
+          // TODO
+          // come up with a way where the Jenkinsfile does not need to be maintained
+          // at least WRT to tests/downstreams jobs.
+          // i.e, have the pipeline read test ids from a file
+          // we maintain the file, not the test ids.
+
           def tests = [:]
           for (i = 0; i <3; i++) {
             tests["${i}"] = {
