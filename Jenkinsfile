@@ -45,11 +45,6 @@ spec:
           for (i = 0; i <3; i++) {
             tests["${i}"] = {
               stage('blabla${i}'){
-                agent {
-                  kubernetes {
-                    label 'mypod-A'
-                  }
-                }
                 steps {
                   container('test-${i}') {
                     echo 'from non parallel stage'
@@ -58,6 +53,7 @@ spec:
               }
             }
           }
+          echo "${tests}"
           parallel tests
         }
       }
