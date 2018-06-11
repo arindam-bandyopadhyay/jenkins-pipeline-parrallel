@@ -1,5 +1,28 @@
+def jobs = ["ql_gf_full_profile_all", "ql_gf_web_profile_all", "deployment_all"]
+
+def parallelStagesMap = jobs.collectEntries {
+  ["${it}": generateStage(it)]
+}
+
+def generateStage(job) {
+  return {
+    stage("${job}") {
+      agent {
+        kubernetes {
+          label 'mypod-A'
+        }
+      }
+      steps {
+        container('glassfish-ci') {
+        echo 'form ${job}'
+	}
+      }
+    }
+  }
+}
+
 pipeline {
- agent {
+  agent {
     kubernetes {
       label 'mypod'
       defaultContainer 'jnlp'
@@ -8,60 +31,42 @@ apiVersion: v1
 kind: Pod
 metadata:
   labels:
-    mypod: "ok"
+    some-label: some-label-value
 spec:
   containers:
-  - name: busybox
-    image: busybox
+  - name: glassfish-ci
+    image: arindamb/glassfish-ci
     command:
     - cat
     tty: true
 """
     }
   }
+  environment {
+    S1AS_HOME = "$WORKSPACE/glassfish5/glassfish"
+    APS_HOME = "$WORKSPACE/appserver/tests/appserv-tests"
+    TEST_RUN_LOG = "$WORKSPACE/tests-run.log"
+    MAVEN_REPO_LOCAL = "$WORKSPACE/repository"
+  }
   stages {
-    stage('stage 1') {
-      parallel {
-        stage('stage1.1') {
-          steps {
-            container('busybox') {
-              echo 'from Stage1.1'
-              sh 'echo "stage1.1" > output.txt'
-              stash includes: 'output.txt', name: 'stash-stage1.1'
-            }
-          }
-        }
-        stage('stage 1.2') {
-          steps {
-            container('busybox') {
-              echo 'from Stage 1.2'
-              sh 'echo "stage1.2" > output.txt'
-              stash includes: 'output.txt', name: 'stash-stage1.2'
-            }
-          }
-        }
-        stage('stage 1.3') {
-          steps {
-            container('busybox') {
-              echo "from stage 1.3" 
-            }
-          }
+    stage('glassfish-build') {
+      agent {
+        kubernetes {
+          label 'mypod-A'
         }
       }
-    }
-    stage('stage3') {
       steps {
-        echo 'from stage3'
-        dir('from-stage-1.1') {
-          unstash 'stash-stage1.1'
-          sh 'pwd && ls -al . && ls -al ../ && cat output.txt'
+        container('glassfish-ci') {
+          echo 'from non parallel stage'
         }
-        dir('from-stage-1.2') {
-          unstash 'stash-stage1.2'
-          sh 'pwd && ls -al . && ls -al ../ && cat output.txt'
-        }
-        archiveArtifacts artifacts: 'from-stage-*/**/*'
       }
     }
+    stage('glassfish-functional-tests') {
+ steps {
+      script {
+        parallel parallelStagesMap
+      }
+    }
+}
   }
 }
