@@ -44,14 +44,16 @@ spec:
           def tests = [:]
           for (i = 0; i <3; i++) {
             tests["${i}"] = {
-              kubernetes {
-                label 'mypod-A'
-              }
-              stage('blabla${i}'){
-                container('test-${i}') {
-                  sh 'sleep 30'
-                  echo "from parallel stage ${i}"
-                }
+              def label = "mypod-A"
+              podTemplate(label: label) {
+                  node(label) {
+                      stage('Run shell') {
+                        container('glassfish-ci') {
+                          sh 'echo hello world'
+                          sh 'sleep 45'
+                        }
+                      }
+                  }
               }
             }
           }
